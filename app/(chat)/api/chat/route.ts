@@ -6,7 +6,7 @@ import {
   streamText,
 } from 'ai';
 import { auth } from '@/app/(auth)/auth';
-import { systemPrompt } from '@/lib/ai/prompts';
+import { systemPrompt, connectionsPrompt } from '@/lib/ai/prompts';
 import {
   deleteChatById,
   getChatById,
@@ -23,6 +23,7 @@ import { createDocument } from '@/lib/ai/tools/create-document';
 import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
+import { getComposioTools, getActiveConnections } from '@/lib/ai/tools/composio-tools';
 import { isProductionEnvironment } from '@/lib/constants';
 import { myProvider } from '@/lib/ai/providers';
 
@@ -41,6 +42,17 @@ export async function POST(request: Request) {
     } = await request.json();
 
     const session = await auth();
+    
+    // Get active connections if user is logged in
+    let activeConnectionsPrompt = "";
+    if (session?.user?.id) {
+      const activeApps = await getActiveConnections(session.user.id);
+      const appsList = activeApps.length > 0 ? 
+        activeApps.join(", ") : 
+        "No active connections yet";
+      
+      activeConnectionsPrompt = connectionsPrompt({ connections: appsList });
+    }
 
     if (!session || !session.user || !session.user.id) {
       return new Response('Unauthorized', { status: 401 });
@@ -59,7 +71,12 @@ export async function POST(request: Request) {
         message: userMessage,
       });
 
-      await saveChat({ id, userId: session.user.id, title });
+      try {
+        await saveChat({ id, userId: session.user.id, title });
+      } catch (saveChatError) {
+        // Continue without saving chat for debugging purposes
+        // In production, you'd want to return an error response here
+      }
     } else {
       if (chat.userId !== session.user.id) {
         return new Response('Unauthorized', { status: 401 });
@@ -80,10 +97,11 @@ export async function POST(request: Request) {
     });
 
     return createDataStreamResponse({
-      execute: (dataStream) => {
+      execute: async (dataStream) => {
+        const composioTools = await getComposioTools(session);
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({ selectedChatModel }),
+          system: systemPrompt({ selectedChatModel }) + "\n\n" + activeConnectionsPrompt,
           messages,
           maxSteps: 5,
           experimental_activeTools:
@@ -94,13 +112,16 @@ export async function POST(request: Request) {
                   'createDocument',
                   'updateDocument',
                   'requestSuggestions',
+                  // Use type assertion to add Composio tool names
+                  ...Object.keys(composioTools) as any[],
                 ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           experimental_generateMessageId: generateUUID,
           tools: {
+            ...composioTools,
             getWeather,
-            createDocument: createDocument({ session, dataStream }),
-            updateDocument: updateDocument({ session, dataStream }),
+            createDocument: createDocument({ session, dataStream, messages }),
+            updateDocument: updateDocument({ session, dataStream, messages }),
             requestSuggestions: requestSuggestions({
               session,
               dataStream,

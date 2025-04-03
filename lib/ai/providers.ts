@@ -4,7 +4,7 @@ import {
   wrapLanguageModel,
 } from 'ai';
 import { groq } from '@ai-sdk/groq';
-import { xai } from '@ai-sdk/xai';
+import { anthropic } from '@ai-sdk/anthropic';
 import { isTestEnvironment } from '../constants';
 import {
   artifactModel,
@@ -12,6 +12,12 @@ import {
   reasoningModel,
   titleModel,
 } from './models.test';
+import { initLogger, wrapAISDKModel } from 'braintrust';
+
+const logger = initLogger({
+  projectName: 'Chutra',
+  apiKey: process.env.BRAINTRUST_API_KEY,
+});
 
 export const myProvider = isTestEnvironment
   ? customProvider({
@@ -24,15 +30,12 @@ export const myProvider = isTestEnvironment
     })
   : customProvider({
       languageModels: {
-        'chat-model': xai('grok-2-1212'),
+        'chat-model': wrapAISDKModel(anthropic('claude-3-5-sonnet-latest')),
         'chat-model-reasoning': wrapLanguageModel({
-          model: groq('deepseek-r1-distill-llama-70b'),
+          model: wrapAISDKModel(groq('deepseek-r1-distill-llama-70b')),
           middleware: extractReasoningMiddleware({ tagName: 'think' }),
         }),
-        'title-model': xai('grok-2-1212'),
-        'artifact-model': xai('grok-2-1212'),
-      },
-      imageModels: {
-        'small-model': xai.image('grok-2-image'),
+        'title-model': wrapAISDKModel(anthropic('claude-3-5-haiku-latest')),
+        'artifact-model': wrapAISDKModel(anthropic('claude-3-5-sonnet-latest')),
       },
     });

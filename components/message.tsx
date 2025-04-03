@@ -11,6 +11,7 @@ import { Markdown } from './markdown';
 import { MessageActions } from './message-actions';
 import { PreviewAttachment } from './preview-attachment';
 import { Weather } from './weather';
+import { ToolCall } from './tool-call';
 import equal from 'fast-deep-equal';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -176,7 +177,13 @@ const PurePreviewMessage = ({
                           args={args}
                           isReadonly={isReadonly}
                         />
-                      ) : null}
+                      ) : (
+                        <ToolCall
+                          key={toolCallId}
+                          toolName={toolName}
+                          args={args}
+                        />
+                      )}
                     </div>
                   );
                 }
@@ -206,7 +213,11 @@ const PurePreviewMessage = ({
                           isReadonly={isReadonly}
                         />
                       ) : (
-                        <pre>{JSON.stringify(result, null, 2)}</pre>
+                        <ToolCall
+                          key={toolCallId}
+                          toolName={toolName}
+                          result={result}
+                        />
                       )}
                     </div>
                   );

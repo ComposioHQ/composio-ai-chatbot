@@ -18,7 +18,8 @@ export interface SaveDocumentProps {
 
 export interface CreateDocumentCallbackProps {
   id: string;
-  title: string;
+  description?: string;
+  conversationHistory?: string;
   dataStream: DataStreamWriter;
   session: Session;
 }
@@ -26,6 +27,7 @@ export interface CreateDocumentCallbackProps {
 export interface UpdateDocumentCallbackProps {
   document: Document;
   description: string;
+  conversationHistory?: string;
   dataStream: DataStreamWriter;
   session: Session;
 }
@@ -46,7 +48,8 @@ export function createDocumentHandler<T extends ArtifactKind>(config: {
     onCreateDocument: async (args: CreateDocumentCallbackProps) => {
       const draftContent = await config.onCreateDocument({
         id: args.id,
-        title: args.title,
+        description: args.description,
+        conversationHistory: args.conversationHistory,
         dataStream: args.dataStream,
         session: args.session,
       });
@@ -54,7 +57,7 @@ export function createDocumentHandler<T extends ArtifactKind>(config: {
       if (args.session?.user?.id) {
         await saveDocument({
           id: args.id,
-          title: args.title,
+          title: '',
           content: draftContent,
           kind: config.kind,
           userId: args.session.user.id,
@@ -74,7 +77,7 @@ export function createDocumentHandler<T extends ArtifactKind>(config: {
       if (args.session?.user?.id) {
         await saveDocument({
           id: args.document.id,
-          title: args.document.title,
+          title: '',
           content: draftContent,
           kind: config.kind,
           userId: args.session.user.id,
