@@ -10,7 +10,7 @@ import { fetcher, generateUUID } from '@/lib/utils';
 import { Artifact } from './artifact';
 import { MultimodalInput } from './multimodal-input';
 import { Messages } from './messages';
-import { VisibilityType } from './visibility-selector';
+import type { VisibilityType } from './visibility-selector';
 import { useArtifactSelector } from '@/hooks/use-artifact';
 import { toast } from 'sonner';
 import { CodeExecutionPrompt } from './code-execution-prompt';
@@ -78,7 +78,7 @@ export function Chat({
     // Handler for execution requests from code artifacts
     const handleExecutionRequest = (event: any) => {
       console.log('DEBUG: Received execution request event', event.detail);
-      if (event.detail && event.detail.artifactId) {
+      if (event.detail?.artifactId) {
         console.log('DEBUG: Setting pending execution with ID', event.detail.artifactId);
         setPendingExecution({ artifactId: event.detail.artifactId });
       }

@@ -1,6 +1,6 @@
 <a href="https://composio.dev">
   <img alt="Composio, Vercel AI SDK, Next.js 14 AI chatbot." src="app/(chat)/opengraph-image.png">
-  <h1 align="center">Composio</h1>
+  <h1 align="center">Composio AI Chatbot Template</h1>
 </a>
 
 <p align="center">
@@ -9,7 +9,6 @@
 
 <p align="center">
   <a href="#features"><strong>Features</strong></a> ·
-  <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
   <a href="#running-locally"><strong>Running locally</strong></a>
 </p>
 <br/>

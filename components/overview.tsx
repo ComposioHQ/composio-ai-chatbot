@@ -33,7 +33,7 @@ export const Overview = () => {
           >
             open source
           </Link>{' '}
-          chatbot template built with Composio, Next.js and AI SDK. It uses Composio's {' '}
+          chatbot template built with Composio, Next.js and AI SDK. It uses Composio&apos;s {' '}
           <code className="rounded-md bg-muted px-1 py-0.5">VercelAIToolSet</code>{' '}, the {' '}
           <Link
             className="font-medium underline underline-offset-4"  

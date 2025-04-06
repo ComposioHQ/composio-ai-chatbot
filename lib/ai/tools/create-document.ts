@@ -1,13 +1,13 @@
 import { generateUUID } from '@/lib/utils';
-import { DataStreamWriter, tool } from 'ai';
+import { type DataStreamWriter, tool } from 'ai';
 import { z } from 'zod';
-import { Session } from 'next-auth';
+import type { Session } from 'next-auth';
 import {
   artifactKinds,
   documentHandlersByArtifactKind,
 } from '@/lib/artifacts/server';
 import type { UIMessage } from 'ai';
-import { title } from 'process';
+import { title } from 'node:process';
 
 interface CreateDocumentProps {
   session: Session;

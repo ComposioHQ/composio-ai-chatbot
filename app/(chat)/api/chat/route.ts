@@ -1,5 +1,5 @@
 import {
-  UIMessage,
+  type UIMessage,
   appendResponseMessages,
   createDataStreamResponse,
   smoothStream,
@@ -111,7 +111,7 @@ export async function POST(request: Request) {
         
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({ selectedChatModel }) + "\n\n" + activeConnectionsPrompt,
+          system: `${systemPrompt({ selectedChatModel })}\n\n${activeConnectionsPrompt}`,
           messages,
           maxSteps: 5,
           experimental_activeTools:

@@ -1,5 +1,5 @@
 import { VercelAIToolSet } from "composio-core";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 
 // Store the entityId in module scope
 let currentEntityId: string | undefined;

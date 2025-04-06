@@ -13,12 +13,12 @@ import { toast } from 'sonner';
 import { generateUUID } from '@/lib/utils';
 import {
   Console,
-  ConsoleOutput,
-  ConsoleOutputContent,
+  type ConsoleOutput,
+  type ConsoleOutputContent,
 } from '@/components/console';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArtifactToolbarContext, ArtifactActionContext } from '@/components/create-artifact';
+import type { ArtifactToolbarContext, ArtifactActionContext } from '@/components/create-artifact';
 import { useLocalStorage } from 'usehooks-ts';
 
 const OUTPUT_HANDLERS = {
@@ -80,7 +80,7 @@ function formatConsoleOutputForChat(outputs: Array<ConsoleOutput>): string {
     
     output.contents.forEach(content => {
       if (content.type === 'text') {
-        result += content.value + '\n';
+        result += `${content.value}\n`;
       } else if (content.type === 'image') {
         // For image content, we just indicate an image was generated
         // The actual image will still be visible in the console

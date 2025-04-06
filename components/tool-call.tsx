@@ -83,6 +83,7 @@ export function ToolCall({
         {/* Tool Arguments Button (only shown if args exist) */}
         {args && (
           <button
+            type="button"
             onClick={toggleArgs}
             className="flex items-center text-xs text-gray-600 hover:text-gray-900 mr-2"
           >
@@ -103,6 +104,7 @@ export function ToolCall({
           </div>
         ) : result ? (
           <button
+            type="button"
             onClick={toggleResult}
             className="flex items-center text-xs text-gray-600 hover:text-gray-900"
           >
@@ -130,9 +132,9 @@ export function ToolCall({
       {isLoading && (
         <div className="px-3 py-3 flex justify-center">
           <div className="flex space-x-2">
-            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+            <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
           </div>
         </div>
       )}
