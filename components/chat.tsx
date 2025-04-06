@@ -148,17 +148,6 @@ export function Chat({
         />
 
         <div className="flex-1 overflow-y-auto">
-          {/* Temporary debug control - to be replaced with proper event handling */}
-          <div className="bg-blue-50 p-2 text-xs flex justify-between border-b border-blue-100">
-            <span>New code generated? Click to show execution options:</span>
-            <button 
-              onClick={() => setPendingExecution({ artifactId: 'temp-code-execution' })}
-              className="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600"
-            >
-              Show Run Options
-            </button>
-          </div>
-          
           {/* Display code execution prompt when needed */}
           <CodeExecutionPrompt 
             onRun={handleRunCode}
