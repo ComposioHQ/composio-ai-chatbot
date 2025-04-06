@@ -18,9 +18,9 @@ function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
       action: `Read and explain what Composio is and how it helps build agents.`,
     },
     {
-      title: "How much is 69,420 USD in Zimbabwian dollar?",
-      label: `Read the current exchange rate`,
-      action: `How much is 69,420 USD in Zimbabwian dollar? Read the current exchange rate and calculate the amount.`,
+      title: "What does my Calendar look like on Wednesday?",
+      label: `When am I free?`,
+      action: `What does my Calendar look like on Wednesday? When am I free?`,
     },
     {
       title: "Write an essay",
@@ -28,9 +28,9 @@ function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
       action: `Write an essay about silicon valley and send it to sid@composio.dev`,
     },
     {
-      title: "What are Sam Altman's observations on AGI?",
-      label: `Scrape Sam Altman's blog.`,
-      action: `What are Sam Altman's observations on AGI? Scrape https://blog.samaltman.com/three-observations to answer.`,
+      title: "What's new on HackerNews?",
+      label: `Summarize the top 10 stories with links.`,
+      action: `What's new on HackerNews? Summarize the top 10 stories with links.`,
     },
   ];
 

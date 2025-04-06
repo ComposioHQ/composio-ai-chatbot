@@ -37,7 +37,7 @@ export function getEntityId(): string | undefined {
 /**
  * Get Composio tools with the current entityId
  */
-export function getComposioTools(apps: string[] = ["composio_search", "firecrawl", "gmail"]) {
+export function getComposioTools(apps: string[] = ["composio_search", "hackernews", "gmail", "googlecalendar"]) {
   if (!toolset) {
     toolset = new VercelAIToolSet({ entityId: currentEntityId });
     console.log('Composio toolset initialized with entityId:', currentEntityId);

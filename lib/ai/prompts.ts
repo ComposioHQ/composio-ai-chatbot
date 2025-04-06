@@ -50,7 +50,8 @@ export const regularPrompt =
   `;
 
 export const connectionsPrompt = ({ connections }: { connections: string }) => 
-  `For apps that have active connections, you can use the tools without having to initiate the connections. For apps that do not have active connections, you need to initiate the connections first. Utilise \`COMPOSIO_INITIATE_CONNECTION\` and \`COMPOSIO_GET_REQUIRED_PARAMETERS\` tools to initiate the connections.
+  `For apps that have active connections, you can use the tools without having to initiate the connections.
+- For apps that do not have active connections, you need to initiate the connections first. Utilise \`COMPOSIO_INITIATE_CONNECTION\` and \`COMPOSIO_GET_REQUIRED_PARAMETERS\` tools to initiate the connections.
 
 The user has access to the following apps: ${connections}`
 
