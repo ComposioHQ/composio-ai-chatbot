@@ -35,7 +35,7 @@ export const myProvider = isTestEnvironment
           model: wrapAISDKModel(groq('deepseek-r1-distill-llama-70b')),
           middleware: extractReasoningMiddleware({ tagName: 'think' }),
         }),
-        'title-model': wrapAISDKModel(anthropic('claude-3-5-haiku-latest')),
+        'title-model': (anthropic('claude-3-5-haiku-latest')),
         'artifact-model': wrapAISDKModel(anthropic('claude-3-5-sonnet-latest')),
       },
     });

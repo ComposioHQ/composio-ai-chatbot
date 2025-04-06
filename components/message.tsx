@@ -20,6 +20,7 @@ import { MessageEditor } from './message-editor';
 import { DocumentPreview } from './document-preview';
 import { MessageReasoning } from './message-reasoning';
 import { UseChatHelpers } from '@ai-sdk/react';
+import { AuthLink } from '@/components/connection-auth-ui';
 
 const PurePreviewMessage = ({
   chatId,
@@ -212,6 +213,8 @@ const PurePreviewMessage = ({
                           result={result}
                           isReadonly={isReadonly}
                         />
+                      ) : toolName === 'initiateConnection' ? (
+                        <AuthLink result={result} />
                       ) : (
                         <ToolCall
                           key={toolCallId}

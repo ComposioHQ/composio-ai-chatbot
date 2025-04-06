@@ -23,7 +23,8 @@ import { createDocument } from '@/lib/ai/tools/create-document';
 import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
-import { getComposioTools, getActiveConnections } from '@/lib/ai/tools/composio-tools';
+import { initiateConnection } from '@/lib/ai/tools/initiate-connection';
+import { getComposioTools, getActiveConnections, initComposio } from '@/lib/ai/composio';
 import { isProductionEnvironment } from '@/lib/constants';
 import { myProvider } from '@/lib/ai/providers';
 
@@ -43,10 +44,13 @@ export async function POST(request: Request) {
 
     const session = await auth();
     
-    // Get active connections if user is logged in
+    // Initialize Composio with the session
+    initComposio(session);
+
+    // Get active connections
     let activeConnectionsPrompt = "";
     if (session?.user?.id) {
-      const activeApps = await getActiveConnections(session.user.id);
+      const activeApps = await getActiveConnections();
       const appsList = activeApps.length > 0 ? 
         activeApps.join(", ") : 
         "No active connections yet";
@@ -98,7 +102,13 @@ export async function POST(request: Request) {
 
     return createDataStreamResponse({
       execute: async (dataStream) => {
-        const composioTools = await getComposioTools(session);
+        // Get tools with no arguments since we've already initialized with the session
+        const composioTools = await getComposioTools();
+        
+        // Log the entire messages array before LLM call
+        console.log(`[${new Date().toISOString()}] Chat ID: ${id} | Model: ${selectedChatModel} | Pre-LLM Messages:`, 
+          JSON.stringify(messages, null, 2));
+        
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
           system: systemPrompt({ selectedChatModel }) + "\n\n" + activeConnectionsPrompt,
@@ -112,6 +122,7 @@ export async function POST(request: Request) {
                   'createDocument',
                   'updateDocument',
                   'requestSuggestions',
+                  'initiateConnection',
                   // Use type assertion to add Composio tool names
                   ...Object.keys(composioTools) as any[],
                 ],
@@ -122,12 +133,14 @@ export async function POST(request: Request) {
             getWeather,
             createDocument: createDocument({ session, dataStream, messages }),
             updateDocument: updateDocument({ session, dataStream, messages }),
-            requestSuggestions: requestSuggestions({
-              session,
-              dataStream,
-            }),
+            requestSuggestions: requestSuggestions({ session, dataStream }),
+            initiateConnection: initiateConnection({ id }),
           },
           onFinish: async ({ response }) => {
+            // Log the complete response from the API
+            console.log(`[${new Date().toISOString()}] Chat ID: ${id} | Model: ${selectedChatModel} | LLM Response:`, 
+              JSON.stringify(response, null, 2));
+
             if (session.user?.id) {
               try {
                 const assistantId = getTrailingMessageId({
@@ -175,11 +188,17 @@ export async function POST(request: Request) {
           sendReasoning: true,
         });
       },
-      onError: () => {
+      onError: (error) => {
+        // Log any errors that occur during the API call
+        console.error(`[${new Date().toISOString()}] Chat ID: ${id} | Model: ${selectedChatModel} | API Error:`,
+          error instanceof Error ? error.message : error);
         return 'Oops, an error occured!';
       },
     });
   } catch (error) {
+    // Log any errors from the overall route handler
+    console.error(`[${new Date().toISOString()}] Chat Route Error:`,
+      error instanceof Error ? { message: error.message, stack: error.stack } : error);
     return new Response('An error occurred while processing your request!', {
       status: 404,
     });
