@@ -12,9 +12,4 @@ export const chatModels: Array<ChatModel> = [
     name: 'Chat model',
     description: 'Primary model for all-purpose chat',
   },
-  {
-    id: 'chat-model-reasoning',
-    name: 'Reasoning model',
-    description: 'Uses advanced reasoning',
-  },
 ];

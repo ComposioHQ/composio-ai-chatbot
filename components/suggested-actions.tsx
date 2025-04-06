@@ -1,36 +1,36 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Button } from './ui/button';
-import { memo } from 'react';
-import { UseChatHelpers } from '@ai-sdk/react';
+import { motion } from "framer-motion";
+import { Button } from "./ui/button";
+import { memo } from "react";
+import { UseChatHelpers } from "@ai-sdk/react";
 
 interface SuggestedActionsProps {
   chatId: string;
-  append: UseChatHelpers['append'];
+  append: UseChatHelpers["append"];
 }
 
 function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
   const suggestedActions = [
     {
-      title: 'What are the advantages',
-      label: 'of using Next.js?',
-      action: 'What are the advantages of using Next.js?',
+      title: "Read about Composio",
+      label: "and explain how it helps build agents",
+      action: `Read and explain what Composio is and how it helps build agents.`,
     },
     {
-      title: 'Write code to',
-      label: `demonstrate djikstra's algorithm`,
-      action: `Write code to demonstrate djikstra's algorithm`,
+      title: "How much is 69,420 USD in Zimbabwian dollar?",
+      label: `Read the current exchange rate`,
+      action: `How much is 69,420 USD in Zimbabwian dollar? Read the current exchange rate and calculate the amount.`,
     },
     {
-      title: 'Help me write an essay',
-      label: `about silicon valley`,
-      action: `Help me write an essay about silicon valley`,
+      title: "Write an essay",
+      label: `about silicon valley and send it in an email.`,
+      action: `Write an essay about silicon valley and send it to sid@composio.dev`,
     },
     {
-      title: 'What is the weather',
-      label: 'in San Francisco?',
-      action: 'What is the weather in San Francisco?',
+      title: "What are Sam Altman's observations on AGI?",
+      label: `Scrape Sam Altman's blog.`,
+      action: `What are Sam Altman's observations on AGI? Scrape https://blog.samaltman.com/three-observations to answer.`,
     },
   ];
 
@@ -46,15 +46,15 @@ function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
           exit={{ opacity: 0, y: 20 }}
           transition={{ delay: 0.05 * index }}
           key={`suggested-action-${suggestedAction.title}-${index}`}
-          className={index > 1 ? 'hidden sm:block' : 'block'}
+          className={index > 1 ? "hidden sm:block" : "block"}
         >
           <Button
             variant="ghost"
             onClick={async () => {
-              window.history.replaceState({}, '', `/chat/${chatId}`);
+              window.history.replaceState({}, "", `/chat/${chatId}`);
 
               append({
-                role: 'user',
+                role: "user",
                 content: suggestedAction.action,
               });
             }}

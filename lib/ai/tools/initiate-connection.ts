@@ -43,7 +43,7 @@ export const initiateConnection = ({ id }: InitiateConnectionProps) =>
           };
         }
 
-        // For OAuth apps like Gmail
+        // For OAuth apps, in this case: Gmail
         if (authType === "oauth") {
           try {
             // Get the entity to initiate the connection
@@ -57,7 +57,7 @@ export const initiateConnection = ({ id }: InitiateConnectionProps) =>
             const connectionRequest = await entity.initiateConnection({
               appName: app,
               // redirectUri,
-              // integrationId: process.env.GMAIL_INTEGRATION_ID,
+              integrationId: process.env.GMAIL_INTEGRATION_ID,
             });
 
             // Extract the auth URL from the connection request
