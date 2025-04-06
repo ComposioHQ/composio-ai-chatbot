@@ -1,4 +1,4 @@
-import { pgTable, text, varchar, timestamp, integer, primaryKey } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, primaryKey } from "drizzle-orm/pg-core";
 
 // NextAuth schema for PostgreSQL
 // These schemas will be used by the Drizzle adapter

@@ -1,7 +1,7 @@
 // chat-exporter.ts - A standalone script to export chat history to JSON
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-import fs from 'fs';
+import fs from 'node:fs';
 import { pgTable, uuid, text, varchar, timestamp, json, boolean, primaryKey } from 'drizzle-orm/pg-core';
 import { eq } from 'drizzle-orm';
 
